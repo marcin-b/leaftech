@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Slider from "@material-ui/core/Slider";
 
-
-const Home = () => {
+const Light = () => {
     return (
         <div>
             <h1>LeafTech Feedback stystem</h1>
@@ -16,4 +18,4 @@ const Home = () => {
         </div>
     );
 };
-export default Home;
+export default Light;

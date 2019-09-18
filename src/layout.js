@@ -1,26 +1,77 @@
-import React from "react"
+import React, { useState } from "react";
+import { Route, Switch, withRouter } from "react-router-dom";
 import {
-    BrowserRouter as Router,
-    Route,
-    Link,
-} from "react-router-dom"
-import Temperature from "./components/Temperature"
-import Home from "./components/Home"
+    TransitionGroup,
+    CSSTransition,
+} from "react-transition-group";
+import Survey from "./components/Survey";
+import Home from "./components/Home";
+import styled from "styled-components";
 
-const Layout = () => {
+const Layout = ({ location }) => {
+    const [temperature, setTemperature] = useState(5);
+    const [humidity, setHumidity] = useState(5);
+    const [light, setLight] = useState(5);
+    const [ventilation, setVentilation] = useState(5);
     return (
-        <Router>
-            <Link to="/">Home</Link>
+        <Wrapper>
+            <div className="wurzel">
+                <TransitionGroup>
+                    <CSSTransition
+                        key={location.key}
+                        in={location.key}
+                        timeout={{ enter: 300, exit: 300 }}
+                        classNames={"fade"}
+                    >
+                        <Switch location={location}>
+                            <Route
+                                exact
+                                path="/"
+                                render={props => <Home {...props} />}
+                            />
+                            <Route
+                                path="/survey"
+                                render={props => (
+                                    <Survey
+                                        {...props}
+                                        {...{
+                                            temperature,
+                                            setTemperature,
+                                            humidity,
+                                            setHumidity,
+                                            light,
+                                            setLight,
+                                            ventilation,
+                                            setVentilation,
+                                        }}
+                                    />
+                                )}
+                            />
+                        </Switch>
+                    </CSSTransition>
+                </TransitionGroup>
+            </div>
+        </Wrapper>
+    );
+};
 
-            <Link to="/temperature">Temerature</Link>
-            <Route exact path="/" component={Home}>
-                <div></div>
-            </Route>
-            <Route
-                path="/temperature"
-                component={Temperature}
-            ></Route>
-        </Router>
-    )
-}
-export default Layout
+const Wrapper = styled.div`
+    .fade-enter {
+        opacity: 0.01;
+    }
+
+    .fade-enter.fade-enter-active {
+        opacity: 1;
+        transition: opacity 300ms ease-in;
+    }
+
+    .fade-exit {
+        opacity: 1;
+    }
+
+    .fade-exit.fade-exit-active {
+        opacity: 0.01;
+        transition: opacity 300ms ease-in;
+    }
+`;
+export default withRouter(Layout);
