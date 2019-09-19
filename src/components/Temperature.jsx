@@ -2,35 +2,48 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
+import icon from "../logo.svg";
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        height: 300,
-    },
     instructions: {
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
+        display: "flex",
+        justifyContent: "space-between",
+    },
+    track: {
+        backgroundColor: "transparent",
+    },
+    thumb: {
+        width: 21,
+        height: 21,
+        marginTop: -10,
     },
 }));
 
 function valuetext(value) {
-    return `${value}°C`;
+    return `${value}`;
 }
 
-const Temperature = () => {
+const Temperature = ({ temperature, setTemperature }) => {
     const classes = useStyles();
     return (
-        <div>
-            <h1>T-icon</h1>
-            <div className={classes.root}>
+        <div className="survey-content-container">
+            <h1>How is the Temperature?</h1>
+            <div>
+                <img src={icon} style={{ width: 300 }} alt="icon" />
                 <Slider
-                    orientation="vertical"
+                    classes={{ track: classes.track, thumb: classes.thumb }}
+                    max={10}
+                    orientation="horizontal"
                     getAriaValueText={valuetext}
-                    defaultValue={50}
-                    aria-labelledby="vertical-slider"
+                    defaultValue={temperature}
+                    onChange={(e, value) => setTemperature(value)}
                 />
                 <Typography className={classes.instructions}>
-                    How is the Temperature?
+                    <span className={"scale-label-span"}>Too Cold</span>
+                    <span className={"scale-label-span"}>Good</span>
+                    <span className={"scale-label-span"}>Too Hot</span>
                 </Typography>
             </div>
         </div>

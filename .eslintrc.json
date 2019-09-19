@@ -42,14 +42,14 @@
         ],
         "no-console": ["error", { "allow": ["warn", "error"] }],
         "react/jsx-no-target-blank": "off",
-        "react/prop-types": 0
-        // "react/self-closing-comp": [
-        //     "error",
-        //     {
-        //         "component": true,
-        //         "html": true
-        //     }
-        // ]
+        "react/prop-types": 0,
+        "react/self-closing-comp": [
+            "error",
+            {
+                "component": true,
+                "html": true
+            }
+        ]
         // "react-hooks/rules-of-hooks": "error",
         // "react-hooks/exhaustive-deps": "warn"
     }

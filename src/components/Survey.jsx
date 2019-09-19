@@ -5,15 +5,20 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Temperature from "./Temperature";
+import Light from "./Light";
+import Air from "./Air";
+import Ventilation from "./Ventilation";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        width: "90%",
+        width: "100%",
         height: "100vh",
         display: "flex",
         justifyContent: "space-between",
+        alignContent: "center",
+        alignItems: "stretch",
         flexDirection: "column",
         paddingBottom: theme.spacing(1),
     },
@@ -25,24 +30,29 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(1),
     },
     surveyContent: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "0 " + theme.spacing(2) + "px",
         height: "100%",
     },
 }));
 
 function getSteps() {
-    return ["Temperature", "Air Quality", "Light", "Ventilation"];
+    return ["Light", "Temperature", "Air Quality", "Ventilation"];
 }
 
-function getStepContent(stepIndex) {
+function getStepContent(stepIndex, valueSetterPair) {
     switch (stepIndex) {
         case 0:
-            return <Temperature />;
+            return <Light {...valueSetterPair} />;
         case 1:
-            return "How would you rate the air quality?";
+            return <Temperature {...valueSetterPair} />;
         case 2:
-            return "Do you like the lighting?";
+            return <Air {...valueSetterPair} />;
         case 3:
-            return "DO you have a good flow?";
+            return <Ventilation {...valueSetterPair} />;
         default:
             return "Finished! Thank you for your Input, Have a great day";
     }
@@ -51,8 +61,8 @@ function getStepContent(stepIndex) {
 const Survey = ({
     temperature,
     setTemperature,
-    humidity,
-    setHumidity,
+    air,
+    setAir,
     light,
     setLight,
     ventilation,
@@ -61,6 +71,12 @@ const Survey = ({
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
+    const valueSettersPairs = [
+        { light, setLight },
+        { temperature, setTemperature },
+        { air, setAir },
+        { ventilation, setVentilation },
+    ];
 
     function handleNext() {
         setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -73,6 +89,7 @@ const Survey = ({
     function handleReset() {
         setActiveStep(0);
     }
+
     return (
         <div className={classes.root}>
             <Stepper activeStep={activeStep} alternativeLabel>
@@ -96,13 +113,21 @@ const Survey = ({
                             display: "flex",
                             justifyContent: "space-between",
                             flexDirection: "column",
-                            paddingBottom: 13,
+                            paddingBottom: 34,
                             height: "100%",
+                            width: "66%",
                         }}
                     >
-                        <Typography className={classes.instructions}>
-                            {getStepContent(activeStep)}
-                        </Typography>
+                        <TransitionGroup>
+                            <CSSTransition
+                                key={activeStep}
+                                // in={location.key}
+                                timeout={{ enter: 300, exit: 100 }}
+                                classNames={"fade"}
+                            >
+                                {getStepContent(activeStep, valueSettersPairs[activeStep])}
+                            </CSSTransition>
+                        </TransitionGroup>
                         <div>
                             <Button
                                 disabled={activeStep === 0}
@@ -111,14 +136,8 @@ const Survey = ({
                             >
                                 Back
                             </Button>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleNext}
-                            >
-                                {activeStep === steps.length - 1
-                                    ? "Finish"
-                                    : "Next"}
+                            <Button variant="contained" color="primary" onClick={handleNext}>
+                                {activeStep === steps.length - 1 ? "Finish" : "Next"}
                             </Button>
                         </div>
                     </div>

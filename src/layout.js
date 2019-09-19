@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 import { Route, Switch, withRouter } from "react-router-dom";
-import {
-    TransitionGroup,
-    CSSTransition,
-} from "react-transition-group";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Survey from "./components/Survey";
 import Home from "./components/Home";
 import styled from "styled-components";
 
 const Layout = ({ location }) => {
-    const [temperature, setTemperature] = useState(5);
-    const [humidity, setHumidity] = useState(5);
     const [light, setLight] = useState(5);
+    const [temperature, setTemperature] = useState(5);
+    const [air, setAir] = useState(5);
     const [ventilation, setVentilation] = useState(5);
     return (
         <Wrapper>
@@ -19,16 +16,12 @@ const Layout = ({ location }) => {
                 <TransitionGroup>
                     <CSSTransition
                         key={location.key}
-                        in={location.key}
+                        // in={location.key}
                         timeout={{ enter: 300, exit: 300 }}
                         classNames={"fade"}
                     >
                         <Switch location={location}>
-                            <Route
-                                exact
-                                path="/"
-                                render={props => <Home {...props} />}
-                            />
+                            <Route exact path="/" render={props => <Home {...props} />} />
                             <Route
                                 path="/survey"
                                 render={props => (
@@ -37,8 +30,8 @@ const Layout = ({ location }) => {
                                         {...{
                                             temperature,
                                             setTemperature,
-                                            humidity,
-                                            setHumidity,
+                                            air,
+                                            setAir,
                                             light,
                                             setLight,
                                             ventilation,
@@ -66,7 +59,7 @@ const Wrapper = styled.div`
     }
 
     .fade-exit {
-        opacity: 1;
+        opacity: 0;
     }
 
     .fade-exit.fade-exit-active {
