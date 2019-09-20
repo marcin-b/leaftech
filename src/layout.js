@@ -26,7 +26,11 @@ const Layout = ({ location }) => {
     // console.log("data as string", JSON.stringify(data));
 
     const sendData = async () => {
-        const { data: response, error } = await axios.post("/write", data, config);
+        const { data: response, error } = await axios.post(
+            "https://ewima.proficloud-staging.net/ds/v1/kairos/api/v1/datapoints/write",
+            data,
+            config,
+        );
         if (error) {
             console.log("error", error);
             return error;

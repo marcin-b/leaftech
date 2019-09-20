@@ -1,12 +1,14 @@
 import { auth } from "./.secrets.js";
 
+const authString = window.btoa(auth.username + ":" + auth.password);
+
 const config = {
-    baseURL: "https://ewima.proficloud-staging.net/ds/v1/kairos/api/v1/datapoints",
-    auth: auth,
+    // baseURL: "https://ewima.proficloud-staging.net/ds/v1/kairos/api/v1/datapoints",
+    // auth: auth,
     headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
-        // Authorization: "Basic OTg3Y2Q0OTktMjM5ZS00Y2QxLWE0OGMtYTk5YjU1NGNjNzNmOnV4OHk4emNQSjBuUg",
+        Authorization: "Basic " + authString,
     },
     // // responseType: "json",
 };
