@@ -15,13 +15,15 @@ const Layout = ({ location }) => {
     const [emotions, setEmotions] = useState(50);
 
     const data = {
-        userFB_UserId: 1337,
         timestamp: Date.now(),
         userFB_Temperature_value: temperature,
         userFB_Light_value: light,
         userFB_Humidity_value: humidity,
         userFB_Ventilation_value: ventilation,
+        userFB_UserId: 1337,
     };
+    // config.headers.data = JSON.stringify(data);
+    // console.log("data as string", JSON.stringify(data));
 
     const sendData = async () => {
         const { data: response, error } = await axios.post("/write", data, config);
