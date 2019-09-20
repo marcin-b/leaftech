@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Temperature from "./Temperature";
 import Light from "./Light";
-import Air from "./Air";
+import Humidity from "./Humidity";
 import Ventilation from "./Ventilation";
 
 const useStyles = makeStyles(theme => ({
@@ -50,19 +50,20 @@ function getStepContent(stepIndex, valueSetterPair) {
         case 1:
             return <Temperature {...valueSetterPair} />;
         case 2:
-            return <Air {...valueSetterPair} />;
+            return <Humidity {...valueSetterPair} />;
         case 3:
             return <Ventilation {...valueSetterPair} />;
         default:
-            return "Finished! Thank you for your Input, Have a great day";
+            return "Finished! Thank you for your Feedback, Have a great day";
     }
 }
 
 const Survey = ({
+    sendData,
     temperature,
     setTemperature,
-    air,
-    setAir,
+    humidity,
+    setHumidity,
     light,
     setLight,
     ventilation,
@@ -74,7 +75,7 @@ const Survey = ({
     const valueSettersPairs = [
         { light, setLight },
         { temperature, setTemperature },
-        { air, setAir },
+        { humidity, setHumidity },
         { ventilation, setVentilation },
     ];
 
@@ -88,6 +89,16 @@ const Survey = ({
 
     function handleReset() {
         setActiveStep(0);
+    }
+    async function handleLastStep() {
+        const { response, error } = await sendData();
+        if (error) {
+            console.log("BUTTON ERROR", error);
+            return error;
+        }
+        console.log("BUTTON RESPONSE", response);
+        handleNext();
+        return response;
     }
 
     return (
@@ -136,7 +147,13 @@ const Survey = ({
                             >
                                 Back
                             </Button>
-                            <Button variant="contained" color="primary" onClick={handleNext}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={
+                                    activeStep === steps.length - 1 ? handleLastStep : handleNext
+                                }
+                            >
                                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
                             </Button>
                         </div>

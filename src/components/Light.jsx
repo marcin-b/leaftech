@@ -35,7 +35,7 @@ const Light = ({ light, setLight }) => {
             <div>
                 <Slider
                     classes={{ track: classes.track, thumb: classes.thumb }}
-                    max={10}
+                    max={100}
                     orientation="horizontal"
                     getAriaValueText={valuetext}
                     defaultValue={light}

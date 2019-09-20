@@ -25,11 +25,11 @@ function valuetext(value) {
     return `${value}`;
 }
 
-const Temperature = ({ temperature, setTemperature }) => {
+const Humidity = ({ humidity, setHumidity }) => {
     const classes = useStyles();
     return (
         <div className="survey-content-container">
-            <h1>How is the Temperature?</h1>
+            <h1>How is the Air?</h1>
             <div>
                 <img src={icon} style={{ width: 300 }} alt="icon" />
                 <Slider
@@ -37,16 +37,16 @@ const Temperature = ({ temperature, setTemperature }) => {
                     max={100}
                     orientation="horizontal"
                     getAriaValueText={valuetext}
-                    defaultValue={temperature}
-                    onChange={(e, value) => setTemperature(value)}
+                    defaultValue={humidity}
+                    onChange={(e, value) => setHumidity(value)}
                 />
                 <Typography className={classes.instructions}>
-                    <span className={"scale-label-span"}>Too Cold</span>
+                    <span className={"scale-label-span"}>Too Humid</span>
                     <span className={"scale-label-span"}>Good</span>
-                    <span className={"scale-label-span"}>Too Hot</span>
+                    <span className={"scale-label-span"}>Too Dry</span>
                 </Typography>
             </div>
         </div>
     );
 };
-export default Temperature;
+export default Humidity;

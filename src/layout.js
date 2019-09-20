@@ -1,22 +1,44 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Survey from "./components/Survey";
 import Home from "./components/Home";
 import styled from "styled-components";
+import config from "./utils/API";
 
 const Layout = ({ location }) => {
-    const [light, setLight] = useState(5);
-    const [temperature, setTemperature] = useState(5);
-    const [air, setAir] = useState(5);
-    const [ventilation, setVentilation] = useState(5);
+    const [light, setLight] = useState(50);
+    const [temperature, setTemperature] = useState(50);
+    const [humidity, setHumidity] = useState(50);
+    const [ventilation, setVentilation] = useState(50);
+    const [emotions, setEmotions] = useState(50);
+
+    const data = {
+        userFB_UserId: 1337,
+        timestamp: Date.now(),
+        userFB_Temperature_value: temperature,
+        userFB_Light_value: light,
+        userFB_Humidity_value: humidity,
+        userFB_Ventilation_value: ventilation,
+    };
+
+    const sendData = async () => {
+        const { data: response, error } = await axios.post("/write", data, config);
+        if (error) {
+            console.log("error", error);
+            return error;
+        }
+        console.log("response", response);
+        return response;
+    };
+
     return (
         <Wrapper>
             <div className="wurzel">
                 <TransitionGroup>
                     <CSSTransition
                         key={location.key}
-                        // in={location.key}
                         timeout={{ enter: 300, exit: 300 }}
                         classNames={"fade"}
                     >
@@ -28,14 +50,17 @@ const Layout = ({ location }) => {
                                     <Survey
                                         {...props}
                                         {...{
+                                            sendData,
                                             temperature,
                                             setTemperature,
-                                            air,
-                                            setAir,
+                                            humidity,
+                                            setHumidity,
                                             light,
                                             setLight,
                                             ventilation,
                                             setVentilation,
+                                            emotions,
+                                            setEmotions,
                                         }}
                                     />
                                 )}

@@ -25,11 +25,11 @@ function valuetext(value) {
     return `${value}`;
 }
 
-const Air = ({ air, setAir }) => {
+const Emotions = ({ emotions, setEmotions }) => {
     const classes = useStyles();
     return (
         <div className="survey-content-container">
-            <h1>How is the Air?</h1>
+            <h1>How do you feel?</h1>
             <div>
                 <img src={icon} style={{ width: 300 }} alt="icon" />
                 <Slider
@@ -37,16 +37,16 @@ const Air = ({ air, setAir }) => {
                     max={10}
                     orientation="horizontal"
                     getAriaValueText={valuetext}
-                    defaultValue={air}
-                    onChange={(e, value) => setAir(value)}
+                    defaultValue={emotions}
+                    onChange={(e, value) => setEmotions(value)}
                 />
                 <Typography className={classes.instructions}>
-                    <span className={"scale-label-span"}>Too Humid</span>
+                    <span className={"scale-label-span"}>Bad></span>
                     <span className={"scale-label-span"}>Good</span>
-                    <span className={"scale-label-span"}>Too Dry</span>
+                    <span className={"scale-label-span"}>Happy</span>
                 </Typography>
             </div>
         </div>
     );
 };
-export default Air;
+export default Emotions;

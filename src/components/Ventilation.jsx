@@ -33,7 +33,7 @@ const Ventivation = ({ ventilation, setVentilation }) => {
                 <img src={icon} style={{ width: 300 }} alt="icon" />
                 <Slider
                     classes={{ track: classes.track, thumb: classes.thumb }}
-                    max={10}
+                    max={100}
                     orientation="horizontal"
                     getAriaValueText={valuetext}
                     defaultValue={ventilation}
