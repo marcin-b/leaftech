@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
+import StepIcon from "@material-ui/core/StepIcon";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -10,6 +11,12 @@ import Temperature from "./Temperature";
 import Light from "./Light";
 import Humidity from "./Humidity";
 import Ventilation from "./Ventilation";
+import lightIcon from "../assets/brightness.png";
+import temperatureIcon from "../assets/temperature.png";
+import humidityIcon from "../assets/air_quality.png";
+import ventilationIcon from "../assets/airflow.png";
+
+const images = [lightIcon, temperatureIcon, humidityIcon, ventilationIcon];
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -22,8 +29,27 @@ const useStyles = makeStyles(theme => ({
         flexDirection: "column",
         paddingBottom: theme.spacing(1),
     },
+    step: {
+        background: "transparent",
+        border: "1px solid black",
+        color: "green",
+    },
     backButton: {
+        minWidth: "unset",
+        width: 40,
+        height: 40,
+        padding: "8px",
+        borderRadius: "50%",
+        color: "white",
+        backgroundColor: theme.palette.primary.main,
         marginRight: theme.spacing(1),
+        "&:disabled": {
+            color: "white",
+            opacity: 0.2,
+        },
+        "&:hover": {
+            background: "gray",
+        },
     },
     instructions: {
         marginTop: theme.spacing(1),
@@ -43,18 +69,18 @@ function getSteps() {
     return ["Light", "Temperature", "Air Quality", "Ventilation"];
 }
 
-function getStepContent(stepIndex, valueSetterPair) {
+function getStepContent(stepIndex, valueSetterPair, image) {
     switch (stepIndex) {
         case 0:
-            return <Light {...valueSetterPair} />;
+            return <Light {...valueSetterPair} icon={image} />;
         case 1:
-            return <Temperature {...valueSetterPair} />;
+            return <Temperature {...valueSetterPair} icon={image} />;
         case 2:
-            return <Humidity {...valueSetterPair} />;
+            return <Humidity {...valueSetterPair} icon={image} />;
         case 3:
-            return <Ventilation {...valueSetterPair} />;
+            return <Ventilation {...valueSetterPair} icon={image} />;
         default:
-            return "Finished! Thank you for your Feedback, Have a great day";
+            return <div />;
     }
 }
 
@@ -106,7 +132,10 @@ const Survey = ({
             <Stepper activeStep={activeStep} alternativeLabel>
                 {steps.map(label => (
                     <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
+                        <StepLabel>
+                            {/* <StepIcon classes={{ root: classes.step }} /> */}
+                            {label}
+                        </StepLabel>
                     </Step>
                 ))}
             </Stepper>
@@ -126,7 +155,7 @@ const Survey = ({
                             flexDirection: "column",
                             paddingBottom: 34,
                             height: "100%",
-                            width: "66%",
+                            width: "90%",
                         }}
                     >
                         <TransitionGroup>
@@ -136,25 +165,35 @@ const Survey = ({
                                 timeout={{ enter: 300, exit: 100 }}
                                 classNames={"fade"}
                             >
-                                {getStepContent(activeStep, valueSettersPairs[activeStep])}
+                                {getStepContent(
+                                    activeStep,
+                                    valueSettersPairs[activeStep],
+                                    images[activeStep],
+                                )}
                             </CSSTransition>
                         </TransitionGroup>
-                        <div>
+                        <div style={{ width: "90%" }}>
                             <Button
                                 disabled={activeStep === 0}
                                 onClick={handleBack}
                                 className={classes.backButton}
                             >
-                                Back
+                                {"<"}
                             </Button>
                             <Button
                                 variant="contained"
                                 color="primary"
+                                style={{
+                                    padding: "8px",
+                                    width: 250,
+                                    borderRadius: 20,
+                                    textTransform: "none",
+                                }}
                                 onClick={
                                     activeStep === steps.length - 1 ? handleLastStep : handleNext
                                 }
                             >
-                                {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                                {activeStep === steps.length - 1 ? "Finish" : "Done"}
                             </Button>
                         </div>
                     </div>

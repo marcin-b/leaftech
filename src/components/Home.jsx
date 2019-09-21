@@ -11,6 +11,7 @@ const Home = () => {
             <Link to="/survey">
                 <Button color="primary">Sart the Surevey</Button>
             </Link>
+			
             <br />
         </div>
     );

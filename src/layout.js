@@ -6,6 +6,7 @@ import Survey from "./components/Survey";
 import Home from "./components/Home";
 import styled from "styled-components";
 import config from "./utils/API";
+import ThemeWrapper from "./ThemeWrapper";
 
 const Layout = ({ location }) => {
     const [light, setLight] = useState(50);
@@ -26,11 +27,7 @@ const Layout = ({ location }) => {
     // console.log("data as string", JSON.stringify(data));
 
     const sendData = async () => {
-        const { data: response, error } = await axios.post(
-            "https://ewima.proficloud-staging.net/ds/v1/kairos/api/v1/datapoints/write",
-            data,
-            config,
-        );
+        const { data: response, error } = await axios.post("/write", data, config);
         if (error) {
             console.log("error", error);
             return error;
@@ -41,40 +38,42 @@ const Layout = ({ location }) => {
 
     return (
         <Wrapper>
-            <div className="wurzel">
-                <TransitionGroup>
-                    <CSSTransition
-                        key={location.key}
-                        timeout={{ enter: 300, exit: 300 }}
-                        classNames={"fade"}
-                    >
-                        <Switch location={location}>
-                            <Route exact path="/" render={props => <Home {...props} />} />
-                            <Route
-                                path="/survey"
-                                render={props => (
-                                    <Survey
-                                        {...props}
-                                        {...{
-                                            sendData,
-                                            temperature,
-                                            setTemperature,
-                                            humidity,
-                                            setHumidity,
-                                            light,
-                                            setLight,
-                                            ventilation,
-                                            setVentilation,
-                                            emotions,
-                                            setEmotions,
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Switch>
-                    </CSSTransition>
-                </TransitionGroup>
-            </div>
+            <ThemeWrapper>
+                <div className="wurzel">
+                    <TransitionGroup>
+                        <CSSTransition
+                            key={location.key}
+                            timeout={{ enter: 300, exit: 300 }}
+                            classNames={"fade"}
+                        >
+                            <Switch location={location}>
+                                <Route exact path="/" render={props => <Home {...props} />} />
+                                <Route
+                                    path="/survey"
+                                    render={props => (
+                                        <Survey
+                                            {...props}
+                                            {...{
+                                                sendData,
+                                                temperature,
+                                                setTemperature,
+                                                humidity,
+                                                setHumidity,
+                                                light,
+                                                setLight,
+                                                ventilation,
+                                                setVentilation,
+                                                emotions,
+                                                setEmotions,
+                                            }}
+                                        />
+                                    )}
+                                />
+                            </Switch>
+                        </CSSTransition>
+                    </TransitionGroup>
+                </div>
+            </ThemeWrapper>
         </Wrapper>
     );
 };
