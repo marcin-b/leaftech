@@ -1,17 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+import startButton from "../assets/lets_start.png";
 
 const Home = () => {
     return (
-        <div>
-            <h1>LeafTech Feedback stystem</h1>
-            Welcome to the Leaftech feedback system.
-            <br />
+        <div style={{ paddingTop: "88px" }}>
+            <h2>Build your Thermal Profile</h2>
+
+            <p style={{ padding: "0px 34px", fontSize: 21 }}>
+                The tool to design a space that adaps to your needs and preferences.
+            </p>
             <Link to="/survey">
-                <Button color="primary">Sart the Surevey</Button>
+                <img src={startButton} />
             </Link>
-			
             <br />
         </div>
     );
