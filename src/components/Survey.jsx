@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
-import StepIcon from "@material-ui/core/StepIcon";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -122,7 +121,7 @@ const Survey = ({
             console.log("BUTTON ERROR", error);
             return error;
         }
-        console.log("BUTTON RESPONSE", response);
+
         handleNext();
         return response;
     }
@@ -190,7 +189,8 @@ const Survey = ({
                                     textTransform: "none",
                                 }}
                                 onClick={
-                                    activeStep === steps.length - 1 ? handleLastStep : handleNext
+                                    // activeStep === steps.length - 1 ? handleLastStep :
+                                    handleNext
                                 }
                             >
                                 {activeStep === steps.length - 1 ? "Finish" : "Done"}
